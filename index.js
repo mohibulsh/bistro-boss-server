@@ -30,8 +30,13 @@ async function run() {
     await client.connect();
    // get the all menu data from database
    const menuCollection =client.db('bristroDb').collection('menu')
+   const reviewCollection =client.db('bristroDb').collection('reviews')
    app.get('/menu', async(req,res)=>{
     const result = await menuCollection.find().toArray();
+    res.send(result)
+   })
+   app.get('/reviews', async(req,res)=>{
+    const result = await reviewCollection.find().toArray();
     res.send(result)
    })
 
