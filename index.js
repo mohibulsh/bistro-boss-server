@@ -39,6 +39,13 @@ async function run() {
     const result = await reviewCollection.find().toArray();
     res.send(result)
    })
+  //send the particular data to mongodb
+  const cartCollection =client.db('bristroDb').collection('carts')
+  app.post('/carts',async(req,res)=>{
+    const doc =req.body;
+    const result = await cartCollection.insertOne(doc);
+    res.send(result)
+  })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
