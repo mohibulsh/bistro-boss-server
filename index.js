@@ -67,7 +67,7 @@ async function run() {
     res.send(result)
   })
   //create a admin users
-  app.patch('users/admin/:id',async(req,res)=>{
+  app.patch('/users/admin/:id',async(req,res)=>{
     const id =req.params.id;
     const filter ={_id : new ObjectId(id)}
     const updateDoc = {
@@ -76,6 +76,14 @@ async function run() {
       },
     };
     const result = await usersCollection.updateOne(filter,updateDoc)
+    res.send(result)
+  })
+  //admin delete 
+  app.delete('/users/admin/:id',async(req,res)=>{
+    const id =req.params.id;
+    console.log(id)
+    const query ={_id :new ObjectId(id)}
+    const result =await usersCollection.deleteOne(query);
     res.send(result)
   })
   //get the data depends on email
