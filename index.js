@@ -46,6 +46,38 @@ async function run() {
     const result = await cartCollection.insertOne(doc);
     res.send(result)
   })
+
+  //user create and saved the mongodb database
+  const usersCollection =client.db('bristroDb').collection('users')
+  app.post('/users',async(req,res)=>{
+    const user =req.body;
+    const query ={email:user.eamil} 
+    console.log(query)
+    const existanceUser = await usersCollection.findOne(query.email)
+    console.log(existanceUser)
+    if(existanceUser){
+      return res.send({messange:'user already exists'})
+    }
+    const result =await usersCollection.insertOne(user)
+    res.send(result) 
+  })
+  //find the all users
+  app.get('/users',async(req,res)=>{
+    const result =await usersCollection.find().toArray();
+    res.send(result)
+  })
+  //create a admin users
+  app.patch('users/admin/:id',async(req,res)=>{
+    const id =req.params.id;
+    const filter ={_id : new ObjectId(id)}
+    const updateDoc = {
+      $set: {
+        role:'admin'
+      },
+    };
+    const result = await usersCollection.updateOne(filter,updateDoc)
+    res.send(result)
+  })
   //get the data depends on email
   app.get('/carts',async(req,res)=>{
     const email =req.query.email;
